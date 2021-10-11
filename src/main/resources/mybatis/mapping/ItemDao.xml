@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.ItemDao">
+
+    <!--
+        private int id;
+        private String name;
+        private int price;
+        private String describe;
+        private int checkoutTime;
+        private String message;
+    -->
+
+    <resultMap type="cn.moquan.bean.item.Item" id="item">
+        <id column="item_id" property="id" />
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="describe" property="describe"/>
+        <result column="checkout_time" property="checkoutTime"/>
+    </resultMap>
+
+
+    <!--
+        boolean insertItem(Item Item);
+
+        boolean deleteItemById(int id);
+
+        boolean updateItem(Item Item);
+
+        Item getItemById(int id);
+
+        List<Item> getItems();
+    -->
+
+    <insert id="insertItem">
+        insert into
+        item (name, price, `describe`, checkout_time)
+        values(#{name}, #{price}, #{describe}, #{checkoutTime})
+    </insert>
+
+    <delete id="deleteItemById">
+        delete from item
+        where item_id = #{id}
+    </delete>
+
+    <update id="updateItem">
+        update item
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="describe != null">`describe` = #{describe},</if>
+            <if test="checkoutTime != null">checkout_time = #{checkoutTime}</if>
+        </set>
+        where item_id = #{id}
+    </update>
+
+    <select id="getItemById" resultMap="item">
+        select * from item where item_id = #{id}
+    </select>
+
+    <select id="getItems" resultMap="item">
+        select * from item
+    </select>
+
+    <!--
+         List<Item> getItemByName(String name);
+    -->
+
+    <select id="getItemByName" resultMap="item">
+        select * from item
+        where name like #{name}
+    </select>
+
+</mapper>

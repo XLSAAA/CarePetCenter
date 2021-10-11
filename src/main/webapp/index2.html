@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script src="public/js/jquery-3.6.0.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+<!--
+    model
+    $(function () {
+        $('#').on("click", function (){
+            $.ajax({
+                type: 'delete',
+                contentType: 'application/json;charset=utf-8',
+                url:'',
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+-->
+
+<hr>
+
+<br>
+    <a href="/default/toindex">toIndex</a>
+<br>
+<hr>
+
+<div id="item_nurse">
+    <h1>item_nurse</h1>
+    <button type="button" id="getAllItem"> get All Item</button>
+    <button type="button" id="getAllNurse"> get All Nurse</button>
+    <br>
+
+    <form>
+        item_nurse_nurse_id<input type="text" id="item_nurse_nurse_id" value="" />
+        item_nurse_item_id<input type="text" id="item_nurse_item_id" value="" />
+    </form>
+
+    <button type="button" id="add_item_nurse"> add Item Nurse </button>
+    <button type="button" id="del_item_nurse"> del Item Nurse </button>
+
+    <br>
+
+    <form>
+        <input type="text" id="item_nurse_info" value="" />
+        <input type="button" id="item_nurse_info_item_can_btn" value="item_nurse_info_item_can_btn" />
+        <input type="button" id="item_nurse_info_nurse_can_btn" value="item_nurse_info_nurse_can_btn" />
+        <input type="button" id="item_nurse_info_item_can_not_btn" value="item_nurse_info_item_can_not_btn" />
+        <input type="button" id="item_nurse_info_nurse_can_not_btn" value="item_nurse_info_nurse_can_not_btn" />
+    </form>
+
+
+
+</div>
+
+<script type="text/javascript">
+
+    var itemNurse = {
+        nurseId : null,
+        itemId : null
+    };
+
+    $(function () {
+        $('#getAllItem').on("click", function (){
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/item/items',
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#getAllNurse').on("click", function (){
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/nurse/nurses',
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#add_item_nurse').on("click", function (){
+
+            itemNurse.itemId = $('#item_nurse_item_id').val();
+            itemNurse.nurseId = $('#item_nurse_nurse_id').val();
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/itemAndNurse/add',
+                dataType: 'json',
+                data: JSON.stringify(itemNurse),
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#del_item_nurse').on("click", function (){
+
+            itemNurse.itemId = $('#item_nurse_item_id').val();
+            itemNurse.nurseId = $('#item_nurse_nurse_id').val();
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/itemAndNurse/del',
+                dataType: 'json',
+                data: JSON.stringify(itemNurse),
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#item_nurse_info_item_can_btn').on("click", function (){
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/itemAndNurse/nurses/' + $('#item_nurse_info').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#item_nurse_info_nurse_can_btn').on("click", function (){
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/itemAndNurse/item/' + $('#item_nurse_info').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#item_nurse_info_item_can_not_btn').on("click", function (){
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/itemAndNurse/nursesNot/' + $('#item_nurse_info').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#item_nurse_info_nurse_can_not_btn').on("click", function (){
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url:'/itemAndNurse/itemNot/' + $('#item_nurse_info').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data)
+                    console.log('service message : ' + data.message)
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+
+</script>
+
+<hr>
+
+<div id="Nurse AND item">
+    NurseGender: <input type="text" id="NurseGender" />
+    <button type="button" id="getNurseByGender">getNurseByGender</button>
+    <br>
+    NurseName: <input type="text" id="NurseName" />
+    <button type="button" id="getNurseByName">getNurseByName</button>
+    <br>
+
+    ItemName: <input type="text" id="ItemName" />
+    <button type="button" id="getItemByName">getItemByName</button>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#getNurseByGender').on('click', function () {
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/nurse/gender/' + $('#NurseGender').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data){
+                    console.log(data)
+                    console.log(data.message)
+                },
+                error: function (e) {
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#getNurseByName').on('click', function () {
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/nurse/name/' + $('#NurseName').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data){
+                    console.log(data)
+                    console.log(data.message)
+                },
+                error: function (e) {
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#getItemByName').on('click', function () {
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/item/name/' + $('#ItemName').val(),
+                dataType: 'json',
+                data: '',
+                success: function (data){
+                    console.log(data)
+                    console.log(data.message)
+                },
+                error: function (e) {
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+
+</script>
+
+<hr>
+
+<div id="Order Test">
+
+    <div id="order form">
+        order_id: <input type="text" id="order_id" />
+        <br>
+        item_id: <input type="text" id="order_item_id" />
+        <br>
+        master_id: <input type="text" id="order_master_id" />
+        <br>
+        pet_id: <input type="text" id="order_pet_id" />
+        <br>
+        nurse_id: <input type="text" id="order_nurse_id" />
+        <br>
+        user_id: <input type="text" id="order_user_id" />
+        <br>
+        remake: <input type="text" id="order_remake" />
+        <br>
+        status: <input type="text" id="order_status" />
+        <br>
+    </div>
+    <button type="button" id="btnCreateOrder">btnCreateOrder</button>
+    <br>
+    <button type="button" id="btnGetAllOrder">btnGetAllOrder</button>
+    <br>
+    <button type="button" id="btnGetOrderBy">btnGetOrderBy</button>
+    <br>
+    <button type="button" id="btnUpdateOrder">btnUpdateOrder</button>
+    <br>
+
+</div>
+
+<script type="text/javascript">
+
+    var order = {
+        id: null,
+        itemId: null,
+        masterId: null,
+        petId: null,
+        nurseId: null,
+        userId: null,
+        remake: null,
+        status: null,
+        message: null
+    };
+
+    $(function () {
+        $('#btnCreateOrder').on('click', function () {
+
+            order.id = $('#order_id').val();
+            order.itemId = $('#order_item_id').val();
+            order.masterId = $('#order_master_id').val();
+            order.petId = $('#order_pet_id').val();
+            order.nurseId = $('#order_nurse_id').val();
+            order.userId = $('#order_user_id').val();
+            order.remake = $('#order_remake').val();
+            order.status = $('#order_status').val();
+            order.message = $('#order').val();
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/order/order',
+                dataType: 'json',
+                data: JSON.stringify(order),
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.message);
+                },
+                error: function (e){
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#btnGetAllOrder').on('click', function () {
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/order/orders',
+                dataType: 'json',
+                data: '',
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.message);
+                },
+                error: function (e){
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#btnGetOrderBy').on('click', function () {
+
+            order.id = $('#order_id').val();
+            order.itemId = $('#order_item_id').val();
+            order.masterId = $('#order_master_id').val();
+            order.petId = $('#order_pet_id').val();
+            order.nurseId = $('#order_nurse_id').val();
+            order.userId = $('#order_user_id').val();
+            order.remake = $('#order_remake').val();
+            order.status = $('#order_status').val();
+            order.message = $('#order').val();
+
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/order/by',
+                dataType: 'json',
+                data: JSON.stringify(order),
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.message);
+                },
+                error: function (e){
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#btnUpdateOrder').on('click', function () {
+
+            order.id = $('#order_id').val();
+            order.status = $('#order_status').val();
+
+            $.ajax({
+                type: 'put',
+                contentType: 'application/json;charset=utf-8',
+                url: '/order/status',
+                dataType: 'json',
+                data: JSON.stringify(order),
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.message);
+                },
+                error: function (e){
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+</script>
+
+<hr>
+
+<div id="mail test">
+    <button type="button" id="SendMail">SendMail</button>
+    <button type="button" id="clearMail">clearMail</button>
+    <button type="button" id="errorMail">errorMail</button>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#SendMail').on('click', function (){
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/mail/send',
+                dataType: 'json',
+                data: '',
+                success: function (data){
+                    console.log(data);
+                    console.log(data.message)
+                },
+                error: function (e) {
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#clearMail').on('click', function (){
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/mail/clear',
+                dataType: 'json',
+                data: '',
+                success: function (data){
+                    console.log(data);
+                    console.log(data.message)
+                },
+                error: function (e) {
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+
+    $(function () {
+        $('#errorMail').on('click', function (){
+            $.ajax({
+                type: 'post',
+                contentType: 'application/json;charset=utf-8',
+                url: '/mail/error',
+                dataType: 'json',
+                data: '',
+                success: function (data){
+                    console.log(data);
+                    console.log(data.message)
+                },
+                error: function (e) {
+                    console.log(e.status)
+                    console.log(e.responseText)
+                }
+            })
+        })
+    })
+</script>
+
+<hr>
+</body>
+</html>

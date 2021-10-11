@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.NurseDao">
+
+    <!--
+    	nurse_id INT PRIMARY KEY AUTO_INCREMENT,
+        NAME VARCHAR(20),
+        gender INT,
+        `describe` VARCHAR(100)
+
+        private int id;
+        private String name;
+        private int gender;
+        private int describe;
+        private String message;
+    -->
+
+    <resultMap type="cn.moquan.bean.nurse.Nurse" id="nurse">
+        <id column="nurse_id" property="id" />
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="describe" property="describe"/>
+    </resultMap>
+
+
+    <!--
+        boolean insertNurse(Nurse nurse);
+
+        boolean deleteNurseById(int id);
+
+        boolean updateNurse(Nurse nurse);
+
+        Nurse getNurseById(int id);
+
+        List<Nurse> getNurses();
+    -->
+
+    <insert id="insertNurse">
+        insert into
+        nurse (name, gender, `describe`)
+        values(#{name}, #{gender}, #{describe})
+    </insert>
+
+    <delete id="deleteNurseById">
+        delete from nurse
+        where nurse_id = #{id}
+    </delete>
+
+    <update id="updateNurse">
+        update nurse
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="describe != null">`describe` = #{describe},</if>
+        </set>
+        where nurse_id = #{id}
+    </update>
+
+    <select id="getNurseById" resultMap="nurse">
+        select * from nurse where nurse_id = #{id}
+    </select>
+
+    <select id="getNurses" resultMap="nurse">
+        select * from nurse
+    </select>
+
+    <!--
+        List<Nurse> getNurseByGender(int genderId);
+    -->
+
+    <select id="getNurseByGender" resultMap="nurse">
+        select * from nurse
+        where gender = #{genderId}
+    </select>
+
+    <select id="getNurseByName" resultMap="nurse">
+        select * from nurse
+        where name like #{name}
+    </select>
+
+</mapper>

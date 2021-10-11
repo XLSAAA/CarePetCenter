@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.OrderDao">
+
+    <!--
+        private int id;
+        private int itemId;
+        private int masterId;
+        private int petId;
+        private int nurseId;
+        private int userId;
+        private String createTime;
+        private String endTime;
+        private String remake;
+        private int status;
+        private String message;
+    -->
+
+    <resultMap id="order" type="cn.moquan.bean.order.Order">
+        <id column="order_id" property="id" />
+        <result column="item_id" property="itemId" />
+        <result column="master_id" property="masterId" />
+        <result column="pet_id" property="petId" />
+        <result column="nurse_id" property="nurseId" />
+        <result column="user_id" property="userId" />
+        <result column="pay" property="pay" />
+        <result column="create_time" property="createTime" />
+        <result column="end_time" property="endTime" />
+        <result column="remake" property="remake" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!--
+        boolean createOrder(Order order);
+
+        List<Order> getAllOrder();
+
+        boolean updateOrderStatus(OrderStatusInfo info);
+
+        List<Order> getOrderBy(Order order);
+    -->
+
+    <insert id="createOrder">
+        insert into
+        `order`(item_id, master_id, pet_id, nurse_id, user_id, pay, create_time, remake, status)
+        values(#{itemId}, #{masterId}, #{petId}, #{nurseId}, #{userId}, #{pay}, now(), #{remake}, 2)
+    </insert>
+
+    <select id="getAllOrder" resultMap="order">
+        select * from `order`
+    </select>
+    
+    <update id="updateOrderStatus">
+        update `order`
+        set status = #{status}
+        where order_id = #{id}
+    </update>
+
+    <select id="getOrderBy" resultMap="order">
+        select * from `order`
+        <where>
+            <if test="id != 0">order_id = #{id}</if>
+            <if test="itemId != 0"> AND item_id = #{itemId}</if>
+            <if test="masterId != 0"> AND master_id = #{masterId}</if>
+            <if test="petId != 0"> AND pet_id = #{petId}</if>
+            <if test="nurseId != 0"> AND nurse_id = #{nurseId}</if>
+            <if test="userId != 0"> AND user_id = #{userId}</if>
+            <if test="status != 0"> AND status = #{status}</if>
+        </where>
+    </select>
+
+    <!--
+        void endOrder(int id);
+    -->
+
+    <update id="endOrder">
+        update `order`
+        set end_time = now(), status = #{status}
+        where order_id = #{id}
+    </update>
+
+</mapper>

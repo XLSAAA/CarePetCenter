@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.MasterDao">
+
+    <!--
+        private int id;
+        private String name;
+        private int gender;
+        private String tel;
+        private String mail;
+        private String address;
+        private int balance;
+        private int vip;
+        private String message;
+    -->
+
+    <resultMap type="cn.moquan.bean.master.Master" id="master">
+        <id column="master_id" property="id" />
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="tel" property="tel"/>
+        <result column="mail" property="mail"/>
+        <result column="address" property="address"/>
+        <result column="balance" property="balance"/>
+        <result column="vip" property="vip"/>
+    </resultMap>
+
+
+    <!--
+        Master getMasterByTel(String tel);
+
+        List<Master> getAllMaster();
+
+        boolean insertMaster(Master master);
+
+        boolean deleteMasterById(int id);
+
+        boolean updateMaster(Master master);
+    -->
+
+    <!--
+        Master getMasterById(int id);
+    -->
+    <select id="getMasterById" resultMap="master">
+        select * from master where master_id = #{id}
+    </select>
+
+
+    <!--
+        Master getMasterByTel(String tel);
+    -->
+    <select id="getMasterByTel" resultMap="master">
+        select * from master where tel = #{tel}
+    </select>
+
+    <!--
+        List<Master> getAllMaster();
+    -->
+    <select id="getAllMaster" resultMap="master">
+        select * from master
+    </select>
+
+
+    <!--
+        boolean insertMaster(Master master);
+        private int id;
+        private String name;
+        private int gender;
+        private String tel;
+        private String mail;
+        private String address;
+        private int balance;
+        private int vip;
+        private String message;
+    -->
+    <insert id="insertMaster">
+        insert into
+        master  (name, gender, tel, mail, address, balance, vip)
+        values  (#{name}, #{gender}, #{tel}, #{mail}, #{address}, 0, 0)
+    </insert>
+
+    <!--
+        boolean deleteMasterById(int id);
+    -->
+    <delete id="deleteMasterById">
+        delete from master where master_id = #{id}
+    </delete>
+
+    <!--
+        boolean updateMaster(Master master);
+        private int id;
+        private String name;
+        private int gender;
+        private String tel;
+        private String mail;
+        private String address;
+        private int balance;
+        private int vip;
+        private String message;
+    -->
+    <update id="updateMaster">
+        update master
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="mail != null">mail = #{mail},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="vip != null">vip = #{vip}</if>
+        </set>
+        where master_id = #{id}
+    </update>
+
+    <!--
+        Master addMoney(int id, int money);
+        boolean pay(Master master); ← 需要开发
+    -->
+
+    <update id="addMoney">
+        update master
+        set balance = balance + #{money}, vip = vip + ${money / 10}
+        where master_id = #{id}
+    </update>
+
+</mapper>

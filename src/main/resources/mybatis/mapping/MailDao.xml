@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.MailDao">
+
+    <!--
+        private int id;
+        private String masterEmail;
+        private String petName;
+        private String itemName;
+        private int orderId;
+        private String sendDate;
+        private int status;
+        private String message;
+    -->
+
+    <resultMap id="mail" type="cn.moquan.bean.mail.Mail">
+        <id column="mail_id" property="id"/>
+        <result column="master_email" property="masterEmail"/>
+        <result column="pet_name" property="petName"/>
+        <result column="item_name" property="itemName"/>
+        <result column="order_id" property="orderId"/>
+        <result column="send_date" property="sendDate"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!--
+        void createMail(Mail mail);
+
+        boolean sendMail();
+
+        boolean clear();
+    -->
+
+    <insert id="createMail">
+        insert into mail (master_email, pet_name, item_name, order_id, send_date, status)
+        values (#{masterEmail}, #{petName}, #{itemName}, #{orderId}, DATE_ADD(now(), INTERVAL #{sendDate} DAY),
+                #{status})
+    </insert>
+
+    <select id="sendMail" resultMap="mail">
+        select *
+        from mail
+        where send_date &lt; now()
+          and status = 2
+    </select>
+
+    <!--
+        boolean clear();
+    -->
+
+    <delete id="clear">
+        delete
+        from mail
+        where send_date &lt; now()
+          and status = 1
+    </delete>
+
+    <!--
+        void updateStatus(int mailId, int status);
+    -->
+    <update id="updateStatus">
+        update mail
+        set status = #{status}
+        where mail_id in
+        <foreach collection="mailIdList" item="mailId" index="i"
+                 open="(" separator="," close=")">
+            #{mailId}
+        </foreach>
+    </update>
+
+    <!--
+        List<Mail> getErrorMail();
+    -->
+
+    <select id="getErrorMail" resultMap="mail">
+        select *
+        from mail
+        where status = -1
+    </select>
+
+</mapper>

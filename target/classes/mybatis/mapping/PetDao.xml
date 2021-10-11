@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.PetDao">
+
+    <!--
+        private int id;
+        private int masterId;
+        private String name;
+        private int age;
+        private int gender;
+        private String kind;
+        private String message;
+    -->
+
+    <resultMap type="cn.moquan.bean.pet.Pet" id="pet">
+        <id column="pet_id" property="id" />
+        <result column="master_id" property="masterId" />
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <result column="kind" property="kind"/>
+    </resultMap>
+
+
+    <!--
+        boolean insertPet(Pet pet);
+
+        boolean deletePetById(int id);
+
+        boolean updatePet(Pet pet);
+
+        Pet getPetById(int id);
+
+        List<Pet> getPets();
+
+        List<Pet> getAllPetByMasterId(int masterId);
+    -->
+
+    <!--
+        boolean insertPet(Pet pet);
+    -->
+
+    <insert id="insertPet">
+        insert into pet(master_id, name, age, gender, kind)
+        values(#{masterId}, #{name}, #{age}, #{gender}, #{kind})
+    </insert>
+
+    <!--
+        boolean deletePetById(int id);
+    -->
+
+    <delete id="deletePetById">
+        delete from pet
+        where pet_id = #{id}
+    </delete>
+
+    <!--
+        boolean updatePet(Pet pet);
+
+        private int id;
+        private int masterId;
+        private String name;
+        private int age;
+        private int gender;
+        private String kind;
+        private String message;
+    -->
+
+    <update id="updatePet">
+        update pet
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="kind != null">kind = #{kind}</if>
+        </set>
+        where pet_id = #{id}
+    </update>
+
+    <!--
+        Pet getPetById(int id);
+    -->
+
+    <select id="getPetById" resultMap="pet">
+        select * from pet
+        where pet_id = #{id}
+    </select>
+
+    <!--
+        List<Pet> getPets();
+    -->
+
+    <select id="getPets" resultMap="pet">
+        select * from pet
+    </select>
+
+    <!--
+        List<Pet> getAllPetByMasterId(int masterId);
+    -->
+
+    <select id="getAllPetByMasterId"  resultMap="pet">
+        select * from pet
+        where master_id = #{masterId}
+    </select>
+
+</mapper>

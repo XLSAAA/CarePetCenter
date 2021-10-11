@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.moquan.dao.ItemNurseDao">
+
+    <!--
+        private int itemId;
+        private int nurseId;
+    -->
+
+    <!--
+        boolean add(ItemNurse itemNurse);
+
+        boolean del(ItemNurse itemNurse);
+
+    -->
+
+    <resultMap type="cn.moquan.bean.item.Item" id="item">
+        <id column="item_id" property="id" />
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="describe" property="describe"/>
+        <result column="checkout_time" property="checkoutTime"/>
+    </resultMap>
+
+
+    <resultMap type="cn.moquan.bean.nurse.Nurse" id="nurse">
+        <id column="nurse_id" property="id" />
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="describe" property="describe"/>
+    </resultMap>
+
+
+    <insert id="add">
+        insert into
+        nurse_item
+        values(#{nurseId}, #{itemId})
+    </insert>
+
+    <delete id="del">
+        delete from nurse_item
+        where nurse_id = #{nurseId} AND item_id = #{itemId}
+    </delete>
+
+    <!--
+        List<Nurse> getNurseByItemId(int itemId);
+
+        List<Item> getItemByNurseId(int nurseId);
+    -->
+
+    <select id="getNurseByItemId" resultMap="nurse">
+        SELECT n.nurse_id, n.name, n.gender, n.describe
+        FROM nurse_item ni
+        LEFT JOIN nurse n
+            ON n.nurse_id = ni.nurse_id
+        WHERE ni.item_id = #{itemId};
+    </select>
+
+    <select id="getItemByNurseId" resultMap="item">
+        SELECT i.item_id, NAME, price, `describe`, checkout_time
+        FROM nurse_item ni
+        LEFT JOIN item i
+            ON i.item_id = ni.item_id
+        WHERE ni.nurse_id = #{nurseId};
+    </select>
+
+    <!--
+        List<Nurse> whoWillNotThisItem(int itemId);
+
+        List<Item> nurseWillNotItem(int nurseId);
+    -->
+
+    <select id="whoWillNotThisItem" resultMap="nurse">
+        SELECT n.nurse_id, n.name, n.gender, n.describe FROM nurse_item ni
+        LEFT JOIN nurse n
+        ON n.nurse_id = ni.nurse_id
+        WHERE ni.nurse_id NOT IN(
+                SELECT nurse_id
+                FROM nurse_item
+                WHERE item_id = #{itemId}
+            )
+        GROUP BY nurse_id;
+    </select>
+
+    <select id="nurseWillNotItem" resultMap="item">
+        SELECT i.item_id, NAME, price, `describe`, checkout_time FROM nurse_item ni
+        LEFT JOIN item i
+        ON i.item_id = ni.item_id
+        WHERE ni.item_id NOT IN(
+                SELECT item_id
+                FROM nurse_item
+                WHERE nurse_id = #{nurseId}
+            )
+        GROUP BY item_id;
+    </select>
+
+</mapper>
